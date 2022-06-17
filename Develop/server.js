@@ -373,9 +373,9 @@ const viewAllEmployeeByDepartment = () => {
             .then(results => {                                       
                
                 db.query(`select * from employee left join role on employee.role_id = role.id where ?`,results).then(results => {
-                    console.log('---- EMPLOYEES ----')
+                    console.log('---- DEPARTMENT ----')
                     console.table(results)
-                    console.log('---- EMPLOYEES ----')
+                    console.log('---- DEPARTMENT ----')
             
                     setTimeout(start, 3000)
                 })
