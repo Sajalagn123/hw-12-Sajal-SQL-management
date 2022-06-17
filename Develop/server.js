@@ -12,7 +12,8 @@ const startMenu = {
         "Show all employees",
         "Show all departments",
         "Show all roles",
-        "Add a department"
+        "Add a department",
+        "Add a role"
         //"Delete an employee"
     ]
 };
@@ -111,7 +112,7 @@ function addDepartment() {
     const addDepartmentPrompt = [
         {
             name: "name",
-            message: "Enter Department name?"
+            message: "Enter Department name."
         },
     ];
     inquirer.prompt(addDepartmentPrompt)
@@ -119,6 +120,41 @@ function addDepartment() {
             db.query('INSERT into department SET ?', results)
                 .then(() => setTimeout(start, 3000))
         });
+}
+
+function addRole() {
+
+    db.query(`SELECT * FROM department`).then((results) => {
+        const roleChoices = results.map(department => {
+            return {
+                name: department.name,
+                value: department.id,
+            }
+    });
+    const addRolePrompt = [
+        {
+            name: "title",
+            message: "Enter role name."
+        },
+        {
+            name: "salary",
+            message: "Enter role salary."
+        },
+        {
+            name: "department_id",
+            message: "Enter role department.",
+            type:"list",
+            choices:roleChoices
+        },
+    ];
+    inquirer.prompt(addRolePrompt)        
+        .then(results => {            
+            db.query('INSERT into role SET ?', results)
+                .then(() => setTimeout(start, 3000))
+        });
+
+
+    });
 }
 
 function start() {
@@ -136,6 +172,8 @@ function start() {
                     return showAllRoles();
                 case "Add a department":
                     return addDepartment();
+                case "Add a role":
+                    return addRole();
             }
         })
 }
